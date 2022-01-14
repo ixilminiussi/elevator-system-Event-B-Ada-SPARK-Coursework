@@ -1,0 +1,202 @@
+machine m3_door
+refines m2_motor
+sees
+c0_cabins
+c1_shafts
+c2_motor
+c3_door
+variables
+floor
+shaft
+motor
+door
+invariants
+@inv6: door ∈ CABINS ⇸ DOOR
+@inv7: ∀c·c ∈ CABINS ∧ c ∈ dom(floor) ⇒ c ∈ dom(door)
+@inv8: ∀c·c ∈ CABINS ∧ c ∈ dom(floor) ∧ motor(c) = ON ⇒ door(c) = CLOSED
+
+events
+	event INITIALISATION extends INITIALISATION
+	begin
+	@dr: door ≔ ∅
+	end
+	
+	event CabinMovesUp refines CabinMovesUp
+	any c f s m d where
+	@grd1: c ∈ CABINS
+	@grd2: c ↦ f ∈ floor
+	@grd3: c ↦ s ∈ shaft
+	@grd4: c ↦ m ∈ motor
+	@grd5: floor(c) = f
+	@grd6: f ≠ TOP_FLOOR
+	@grd7: f+1 ∉ ran(floor)
+	@grd8: shaft(c) = UP_SHAFT
+	@grd9: motor(c) = ON
+	@grd10: c ↦ d ∈ door
+	@grd11: door(c) = CLOSED
+	then
+	@act1: floor(c) ≔ f+1
+	end
+	
+	event CabinMovesDown refines CabinMovesDown
+	any c f s m d where
+	@grd1: c ∈ CABINS
+	@grd2: c ↦ f ∈ floor
+	@grd3: c ↦ s ∈ shaft
+	@grd4: c ↦ m ∈ motor
+	@grd5: floor(c) = f
+	@grd6: f ≠ 0
+	@grd7: f−1 ∉ ran(floor)
+	@grd8: shaft(c) = DOWN_SHAFT
+	@grd9: motor(c) = ON
+	@grd10: c ↦ d ∈ door
+	@grd11: door(c) = CLOSED 
+	then
+	@act1: floor(c) ≔ f−1
+	end
+	
+	event AddCabin refines AddCabin
+	any c where
+	@grd1: c ∈ CABINS
+	@grd2: 0 ∉ ran(floor)
+	@grd3: c ∉ dom(floor)
+	@grd4: c ∉ dom(shaft)
+	@grd5: c ∉ dom(motor)
+	@grd6: c ∉ dom(door)
+	then
+	@act1: floor ≔ floor ∪ {c ↦ 0}
+	@act2: shaft ≔ shaft ∪ {c ↦ UP_SHAFT}
+	@act3: motor ≔ motor ∪ {c ↦ ON}
+	@act4: door(c) ≔ CLOSED
+	end
+	
+	event RemoveCabin refines RemoveCabin
+	any c f s m where
+	@grd1: c ∈ CABINS
+	@grd2: c ↦ f ∈ floor
+	@grd3: c ↦ s ∈ shaft
+	@grd4: c ↦ m ∈ motor
+	@grd5: floor(c) = f
+	@grd6: f = TOP_FLOOR
+	@grd7: shaft(c) = UP_SHAFT
+	@grd8: motor(c) = ON
+	@grd9: door(c) = CLOSED
+	then
+	@act1: floor ≔ {c} ⩤ floor
+	@act2: shaft ≔ {c} ⩤ shaft
+	@act3: motor ≔ {c} ⩤ motor
+	@act4: door ≔ {c} ⩤ door
+	end
+	
+	event CabinUpToDown refines CabinUpToDown
+	any c f s m d where
+	@grd1: c ∈ CABINS
+	@grd2: c ↦ f ∈ floor
+	@grd3: c ↦ s ∈ shaft
+	@grd4: c ↦ m ∈ motor
+	@grd5: shaft(c) = UP_SHAFT
+	@grd6: floor(c) = TOP_FLOOR
+	@grd7: motor(c) = ON
+	@grd8: c ↦ d ∈ door
+	@grd9: door(c) = CLOSED 
+	then
+	@act1: shaft(c) ≔ DOWN_SHAFT
+	end
+	
+	event CabinDownToUp refines CabinDownToUp
+	any c f s m d where
+	@grd1: c ∈ CABINS
+	@grd2: c ↦ f ∈ floor
+	@grd3: c ↦ s ∈ shaft
+	@grd4: c ↦ m ∈ motor
+	@grd5: shaft(c) = DOWN_SHAFT
+	@grd6: floor(c) = 0
+	@grd7: motor(c) = ON
+	@grd8: c ↦ d ∈ door
+	@grd9: door(c) = CLOSED 
+	then
+	@act1: shaft(c) ≔ UP_SHAFT
+	end
+	
+	event MotorStarts refines MotorStarts
+	any c f s m d where
+	@grd1: c ∈ CABINS
+	@grd2: c ↦ f ∈ floor
+	@grd3: c ↦ s ∈ shaft
+	@grd4: c ↦ m ∈ motor
+	@grd5: motor(c) = OFF
+	@grd6: floor(c) = f
+	@grd7: shaft(c) = UP_SHAFT ⇒ f + 1 ∉ ran(floor)
+	@grd8: shaft(c) = DOWN_SHAFT ⇒ f − 1 ∉ ran(floor) 
+	@grd9: c ↦ d ∈ door
+	@grd10: door(c) = CLOSED 
+	then
+	@act1: motor(c) ≔ ON 
+	end
+	
+	event MotorStops refines MotorStops
+	any c f s m d where
+	@grd1: c ∈ CABINS
+	@grd2: c ↦ f ∈ floor
+	@grd3: c ↦ s ∈ shaft
+	@grd4: c ↦ m ∈ motor
+	@grd5: motor(c) = ON
+	@grd6: c ↦ d ∈ door
+	then
+	@act1: motor(c) ≔ OFF
+	end
+
+	
+	event DoorClosedToHalf
+	any c f s m d where
+	@grd1: c ∈ CABINS
+	@grd2: c ↦ f ∈ floor
+	@grd3: c ↦ s ∈ shaft
+	@grd4: c ↦ m ∈ motor
+	@grd5: motor(c) = OFF
+	@grd6: c ↦ d ∈ door
+	@grd7: door(c) = CLOSED
+	then
+	@act0: door(c) ≔ HALF
+	end
+	
+	event DoorOpenToHalf
+	any c f s m d where
+	@grd1: c ∈ CABINS
+	@grd2: c ↦ f ∈ floor
+	@grd3: c ↦ s ∈ shaft
+	@grd4: c ↦ m ∈ motor
+	@grd5: motor(c) = OFF
+	@grd6: c ↦ d ∈ door
+	@grd7: door(c) = OPEN
+	then
+	@act0: door(c) ≔ HALF
+	end
+	
+	event DoorHalfToOpen
+	any c f s m d where
+	@grd1: c ∈ CABINS
+	@grd2: c ↦ f ∈ floor
+	@grd3: c ↦ s ∈ shaft
+	@grd4: c ↦ m ∈ motor
+	@grd5: motor(c) = OFF
+	@grd6: c ↦ d ∈ door
+	@grd7: door(c) = HALF
+	then
+	@act0: door(c) ≔ OPEN
+	end
+	
+	event DoorHalfToClosed
+	any c f s m d where
+	@grd1: c ∈ CABINS
+	@grd2: c ↦ f ∈ floor
+	@grd3: c ↦ s ∈ shaft
+	@grd4: c ↦ m ∈ motor
+	@grd5: motor(c) = OFF
+	@grd6: c ↦ d ∈ door
+	@grd7: door(c) = HALF
+	then
+	@act0: door(c) ≔ CLOSED
+	end
+
+end

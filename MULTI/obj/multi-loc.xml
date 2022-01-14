@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<Locations >
+  <Project>
+    <vfs_file>C:\Users\ixilm\Desktop\MULTI\multi.gpr</vfs_file>
+    <file_marker column=" 64" line=" 22" >
+      <vfs_project>C:\Users\ixilm\Desktop\MULTI\multi.gpr</vfs_project>
+      <vfs_file>C:\Users\ixilm\Desktop\MULTI\src\environment_package.ads</vfs_file>
+    </file_marker>
+    <file_marker column=" 12" line=" 37" >
+      <vfs_project>C:\Users\ixilm\Desktop\MULTI\multi.gpr</vfs_project>
+      <vfs_file>C:\Users\ixilm\Desktop\MULTI\src\cabin_package.ads</vfs_file>
+    </file_marker>
+    <file_marker column=" 1" line=" 1" >
+      <vfs_project>C:\Users\ixilm\Desktop\MULTI\multi.gpr</vfs_project>
+      <vfs_file>C:\Users\ixilm\Desktop\MULTI\src\cabin_package.adb</vfs_file>
+    </file_marker>
+    <file_marker column=" 1" line=" 1" >
+      <vfs_project>C:\Users\ixilm\Desktop\MULTI\multi.gpr</vfs_project>
+      <vfs_file>C:\Users\ixilm\Desktop\MULTI\src\main.adb</vfs_file>
+    </file_marker>
+    <file_marker column=" 7" line=" 16" >
+      <vfs_project>C:\Users\ixilm\Desktop\MULTI\multi.gpr</vfs_project>
+      <vfs_file>C:\Users\ixilm\Desktop\MULTI\src\multi.adb</vfs_file>
+    </file_marker>
+    <file_marker column=" 1" line=" 1" >
+      <vfs_project>C:\Users\ixilm\Desktop\MULTI\multi.gpr</vfs_project>
+      <vfs_file>C:\Users\ixilm\Desktop\MULTI\src\controller_package.ads</vfs_file>
+    </file_marker>
+    <file_marker column=" 1" line=" 1" >
+      <vfs_project>C:\Users\ixilm\Desktop\MULTI\multi.gpr</vfs_project>
+      <vfs_file>C:\Users\ixilm\Desktop\MULTI\src\door_package.ads</vfs_file>
+    </file_marker>
+    <file_marker column=" 1" line=" 1" >
+      <vfs_project>C:\Users\ixilm\Desktop\MULTI\multi.gpr</vfs_project>
+      <vfs_file>C:\Users\ixilm\Desktop\MULTI\src\floor_package.ads</vfs_file>
+    </file_marker>
+    <file_marker column=" 1" line=" 1" >
+      <vfs_project>C:\Users\ixilm\Desktop\MULTI\multi.gpr</vfs_project>
+      <vfs_file>C:\Users\ixilm\Desktop\MULTI\src\shaft_package.ads</vfs_file>
+    </file_marker>
+    <file_marker current="true" column=" 1" line=" 1" >
+      <vfs_project>C:\Users\ixilm\Desktop\MULTI\multi.gpr</vfs_project>
+      <vfs_file>C:\Users\ixilm\Desktop\MULTI\src\multi.ads</vfs_file>
+    </file_marker>
+  </Project>
+</Locations>

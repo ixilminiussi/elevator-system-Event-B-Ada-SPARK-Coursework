@@ -1,0 +1,56 @@
+machine m0_cabins
+sees
+c0_cabins
+variables
+floor
+invariants
+@inv1: floor ∈ CABINS ⇸ FLOORS
+
+events
+	event INITIALISATION
+	begin
+	@fl: floor ≔ ∅
+	end
+	
+	event CabinMovesUp
+	any c f where
+	@grd1: c ∈ CABINS
+	@grd2: c ↦ f ∈ floor
+	@grd3: floor(c) = f
+	@grd4: f ≠ TOP_FLOOR
+	@grd5: f+1 ∉ ran(floor)
+	then
+	@act1: floor(c) ≔ f+1
+	end
+	
+	event CabinMovesDown
+	any c f where
+	@grd1: c ∈ CABINS
+	@grd2: c ↦ f ∈ floor
+	@grd3: floor(c) = f
+	@grd4: f ≠ 0
+	@grd5: f−1 ∉ ran(floor)
+	then
+	@act1: floor(c) ≔ f−1
+	end
+	
+	event AddCabin
+	any c where
+	@grd1: c ∈ CABINS
+	@grd2: 0 ∉ ran(floor)
+	@grd3: c ∉ dom(floor)
+	then
+	@act1: floor ≔ floor ∪ {c ↦ 0}
+	end
+	
+	event RemoveCabin
+	any c f where
+	@grd1: c ∈ CABINS
+	@grd2: c ↦ f ∈ floor
+	@grd3: floor(c) = f
+	@grd4: f = TOP_FLOOR
+	then
+	@act1: floor ≔ {c} ⩤ floor
+	end
+
+end

@@ -1,0 +1,10 @@
+context c3_door
+sets
+DOOR
+constants
+OPEN
+HALF
+CLOSED
+axioms
+@ax5: partition(DOOR, {OPEN}, {CLOSED}, {HALF})
+end

@@ -1,0 +1,307 @@
+/*
+ * This machine refines the buttons into arrays for implementation
+ */
+machine m5_impl
+refines m4_buttons
+sees 
+	c0_floor_ProB
+	c1_directions
+	c2_motor
+	c3_door
+
+variables
+	floor // The current floor position of the elevator
+	direction // The current moving direction of the elevator
+	motor // The current status of the motor
+	door // The current status of the door
+	up_buttons_array // The array of up buttons
+	down_buttons_array // The array of down buttons
+	floor_buttons_array // The array of floor buttons
+
+invariants
+	@typeof-up_buttons_array: up_buttons_array ∈ 0 ‥ TOP_FLOOR → BOOL // We will not use the last element of the array
+	@typeof-down_buttons_array: down_buttons_array ∈ 0 ‥ TOP_FLOOR → BOOL // We will not use the first element of the array
+	@typeof-floor_buttons_array: floor_buttons_array ∈ 0 ‥ TOP_FLOOR → BOOL
+	@gluing-up_buttons: up_buttons = dom(up_buttons_array ▷ {TRUE}) // The up buttons are those that are TRUE in the up buttons array.
+	@gluing-down_buttons: down_buttons = dom(down_buttons_array ▷ {TRUE}) // The down buttons are those that are TRUE in the down buttons array.	
+	@gluing-floor_buttons: floor_buttons = dom(floor_buttons_array ▷ {TRUE}) // The floor buttons are those that are TRUE in the floor buttons array.	
+
+events
+
+	/*
+	 * Initialisation
+	 */
+	event INITIALISATION
+	then
+		@init_floor: floor ≔ 0 // Initially, the elevator is at Floor 0.
+		@init_direction: direction ≔ UP // Initially, the elevator is moving up.
+		@init_motor: motor ≔ STOPPED // Initially, the motor is stopped.
+		@init_door: door ≔ OPEN // Initially, the door is open.
+		@init_up_buttons_array: up_buttons_array ≔ 0 ‥ TOP_FLOOR × {FALSE} // Initially, no up buttons are enabled.
+		@init_down_buttons_array: down_buttons_array ≔ 0 ‥ TOP_FLOOR × {FALSE} // Initially, no down buttons are enabled.
+		@init_floor_buttons_array: floor_buttons_array ≔ 0 ‥ TOP_FLOOR × {FALSE} // Initially, no floor buttons are enabled.
+	end
+	
+	/*
+	 * The elevator moves up 1 floor.
+	 */
+	event MovesUp extends MovesUp
+	end
+	
+	/*
+	 * The elevator moves down 1 floor.
+	 */
+	event MovesDown extends MovesDown
+	end
+
+	/*
+	 * The elevator changes its direction to moving up.
+	 */
+	event ChangesDirectionUp_CurrentFloor
+	refines ChangesDirectionUp_CurrentFloor
+	where
+		@grd1: direction = DOWN // The elevator is currently moving up.
+		@grd2: motor = STOPPED // The motor is currently stopped.
+		@grd3: floor_buttons_array(floor) = FALSE // There are no request for the current floor
+		@grd4: down_buttons_array(floor) = FALSE // There are no request for going down from the current floor
+		@grd5: TRUE ∉ floor_buttons_array[0 ‥ floor − 1]
+		@grd6: TRUE ∉ up_buttons_array[0 ‥ floor − 1] 
+		@grd7: TRUE ∉ down_buttons_array[0 ‥ floor − 1] 
+		@grd8: up_buttons_array(floor) = TRUE // There are some requests further up.
+	then
+		@act1: direction ≔ UP // The elevator is moving up.		
+	end
+	
+	/*
+	 * The elevator changes its direction to moving up.
+	 */
+	event ChangesDirectionUp_UpFloor
+	refines ChangesDirectionUp_UpFloor
+	where
+		@grd1: direction = DOWN // The elevator is currently moving up.
+		@grd2: motor = STOPPED // The motor is currently stopped.
+		@grd3: floor_buttons_array(floor) = FALSE // There are no request for the current floor
+		@grd4: down_buttons_array(floor) = FALSE // There are no request for going down from the current floor
+		@grd5: TRUE ∉ floor_buttons_array[0 ‥ floor − 1]
+		@grd6: TRUE ∉ up_buttons_array[0 ‥ floor − 1] 
+		@grd7: TRUE ∉ down_buttons_array[0 ‥ floor − 1] 
+		@grd8: TRUE ∈ floor_buttons_array[floor + 1 ‥ TOP_FLOOR] ∨ TRUE ∈ up_buttons_array[floor + 1 ‥ TOP_FLOOR] ∨ TRUE ∈ down_buttons_array[floor + 1 ‥ TOP_FLOOR] // There are some requests further up.
+	then
+		@act1: direction ≔ UP // The elevator is moving up.		
+	end
+
+	/*
+	 * The elevator changes its direction to moving down.
+	 */
+	event ChangesDirectionDown_CurrentFloor
+	refines ChangesDirectionDown_CurrentFloor
+	where
+		@grd1: direction = UP // The elevator is currently moving up.
+		@grd2: motor = STOPPED // The motor is currently stopped.
+		@grd3: floor_buttons_array(floor) = FALSE // There are no request for the current floor
+		@grd4: up_buttons_array(floor) = FALSE // There are no request for going up from the current floor
+		@grd5: TRUE ∉ floor_buttons_array[floor + 1 ‥ TOP_FLOOR]
+		@grd6: TRUE ∉ up_buttons_array[floor + 1 ‥ TOP_FLOOR]
+		@grd7: TRUE ∉ down_buttons_array[floor + 1 ‥ TOP_FLOOR]
+		@grd8: down_buttons_array(floor) = TRUE // There are requests to go down.
+	then
+		@act1: direction ≔ DOWN // The elevator is moving down.		
+	end
+	
+	/*
+	 * The elevator changes its direction to moving down.
+	 */
+	event ChangesDirectionDown_DownFloor
+	refines ChangesDirectionDown_DownFloor
+	where
+		@grd1: direction = UP // The elevator is currently moving up.
+		@grd2: motor = STOPPED // The motor is currently stopped.
+		@grd3: floor_buttons_array(floor) = FALSE // There are no request for the current floor
+		@grd4: up_buttons_array(floor) = FALSE // There are no request for going up from the current floor
+		@grd5: TRUE ∉ floor_buttons_array[floor + 1 ‥ TOP_FLOOR]
+		@grd6: TRUE ∉ up_buttons_array[floor + 1 ‥ TOP_FLOOR]
+		@grd7: TRUE ∉ down_buttons_array[floor + 1 ‥ TOP_FLOOR]
+		@grd8: TRUE ∈ floor_buttons_array[0 ‥ floor − 1] ∨ TRUE ∈ up_buttons_array[0 ‥ floor − 1] ∨ TRUE ∈ down_buttons_array[0 ‥ floor − 1] ∨ up_buttons_array(floor) = TRUE // There are some requests further down.
+	then
+		@act1: direction ≔ DOWN // The elevator is moving down.		
+	end
+
+	/*
+	 * The motor winds.
+	 */
+	event MotorWinds
+	refines MotorWinds
+	where
+		@grd1: direction = UP // The elevator is currently moving up.
+		@grd2: motor = STOPPED // The motor is currently stopped.
+		@grd3: door = CLOSED // The door is closed.
+		@grd4: TRUE ∈ floor_buttons_array[floor + 1 ‥ TOP_FLOOR] ∨ TRUE ∈ up_buttons_array[floor + 1 ‥ TOP_FLOOR] ∨ TRUE ∈ down_buttons_array[floor + 1 ‥ TOP_FLOOR] // There are some requests further up.
+		@grd5: floor_buttons_array(floor) = FALSE // There is no request to serve for this floor
+		@grd6: up_buttons_array(floor) = FALSE // There is no request to serve for this floor
+	then
+		@act1: motor ≔ WINDING // The motor is winding up.
+	end
+
+	/*
+	 * The motor unwinds.
+	 */
+	event MotorUnwinds
+	refines MotorUnwinds
+	where
+		@grd1: direction = DOWN // The elevator is currently moving down.
+		@grd2: motor = STOPPED // The motor is currently stopped.
+		@grd3: door = CLOSED // The door is closed.
+		@grd4: TRUE ∈ floor_buttons_array[0 ‥ floor − 1] ∨ TRUE ∈ up_buttons_array[0 ‥ floor − 1] ∨ TRUE ∈ down_buttons_array[0 ‥ floor − 1] // There are some requests further down.
+		@grd5: floor_buttons_array(floor) = FALSE // There is no request to serve for this floor
+		@grd6: down_buttons_array(floor) = FALSE // There is no request to serve for this floor
+	then
+		@act1: motor ≔ UNWINDING // The motor is winding up.
+	end
+
+	/*
+	 * The motor stops.
+	 */
+	event MotorStopsServeRequest
+	refines MotorStopsServeRequest
+	where
+		@grd1: motor ≠ STOPPED
+		@grd2: direction = UP ⇒ floor_buttons_array(floor) = TRUE ∨ up_buttons_array(floor) = TRUE // Only stop while going up if there is a request
+		@grd3: direction = DOWN ⇒ floor_buttons_array(floor) = TRUE ∨ down_buttons_array(floor) = TRUE // Only stop while going down if there is a request
+	then
+		@act1: motor ≔ STOPPED
+	end
+
+	/*
+	 * The motor stops.
+	 */
+	event MotorStopsNoRequest
+	refines MotorStopsNoRequest
+	where
+		@grd1: motor ≠ STOPPED
+		@grd2: direction = UP ⇒ TRUE ∉ floor_buttons_array[floor + 1 ‥ TOP_FLOOR]
+		@grd3: direction = UP ⇒ TRUE ∉ up_buttons_array[floor + 1 ‥ TOP_FLOOR]
+		@grd4: direction = UP ⇒ TRUE ∉ down_buttons_array[floor + 1 ‥ TOP_FLOOR]
+		@grd5: direction = DOWN ⇒ TRUE ∉ floor_buttons_array[0 ‥ floor − 1]
+		@grd6: direction = DOWN ⇒ TRUE ∉ up_buttons_array[0 ‥ floor − 1]
+		@grd7: direction = DOWN ⇒ TRUE ∉ down_buttons_array[0 ‥ floor − 1]
+	then
+		@act1: motor ≔ STOPPED
+	end
+
+	/*
+	 * Door from open to half-open
+	 */
+	event DoorOpen2Half extends DoorOpen2Half
+	end
+	
+	/*
+	 * Door from half-open to closed. 
+	 */
+	event DoorHalf2Closed
+	refines DoorHalf2Closed
+	where
+		@grd1: door = HALF // The door is currently half-open
+		@grd2: floor_buttons_array(floor) = FALSE // There is no request for this floor
+		@grd3: direction = UP ⇒ up_buttons_array(floor) = FALSE // If moving up then there are no pending up request at this floor
+		@grd4: direction = DOWN ⇒ down_buttons_array(floor) = FALSE // If moving down then there are no pending down request at this floor
+	then
+		@act1: door ≔ CLOSED // The door is closed.
+	end
+	
+	/*
+	 * Door from closed to half-open while moving up. 
+	 */
+	event DoorClosed2Half_UP
+	refines DoorClosed2Half_UP
+	where
+		@grd1: door = CLOSED // The door is currently closed
+		@grd2: motor = STOPPED // The motor is stopped.
+		@grd3: direction = UP // The elevator is moving down.
+		@grd4: floor_buttons_array(floor) = TRUE ∨ up_buttons_array(floor) = TRUE // There is a request at this floor
+	then
+		@act1: door ≔ HALF // The door is now half-open.
+		@act2: floor_buttons_array(floor) ≔ FALSE // Clear floor button for the current floor.
+		@act3: up_buttons_array(floor) ≔ FALSE // Clear the up button for the current floor.
+	end
+
+	/*
+	 * Door from closed to half-open while moving down. 
+	 */
+	event DoorClosed2Half_DOWN
+	refines DoorClosed2Half_DOWN
+	where
+		@grd1: door = CLOSED // The door is currently closed
+		@grd2: motor = STOPPED // The motor is stopped.
+		@grd3: direction = DOWN // The elevator is moving down.
+		@grd4: floor_buttons_array(floor) = TRUE ∨ down_buttons_array(floor) = TRUE // There is a request at this floor
+	then
+		@act1: door ≔ HALF // The door is now half-open.
+		@act2: floor_buttons_array(floor) ≔ FALSE // Clear floor button for the current floor.
+		@act3: down_buttons_array(floor) ≔ FALSE // Clear the down button for the current floor.
+	end
+
+	/*
+	 * Door from half-open to open while moving up.
+	 */
+	event DoorHalf2Open_UP
+	refines DoorHalf2Open_UP
+	where
+		@grd1: door = HALF // The door is currently half-open.
+		@grd2: direction = UP // The elevator is moving down.
+	then
+		@act1: door ≔ OPEN // The door is now open.
+		@act2: floor_buttons_array(floor) ≔ FALSE // Clear floor button for the current floor.
+		@act3: up_buttons_array(floor) ≔ FALSE // Clear the up button for the current floor.
+	end
+	
+	/*
+	 * Door from half-open to open while moving down.
+	 */
+	event DoorHalf2Open_DOWN
+	refines DoorHalf2Open_DOWN
+	where
+		@grd1: door = HALF // The door is currently half-open.
+		@grd2: direction = DOWN // The elevator is moving down.
+	then
+		@act1: door ≔ OPEN // The door is now open.
+		@act2: floor_buttons_array(floor) ≔ FALSE // Clear floor button for the current floor.
+		@act3: down_buttons_array(floor) ≔ FALSE // Clear the down button for the current floor.
+	end
+	
+	/*
+	 * User presses the up button on a floor.
+	 */
+	event UpButtonPresses
+	refines UpButtonPresses
+	any f where
+		@grd1: f ∈ 0 ‥ TOP_FLOOR − 1 // Any floor excepts the top floor has an UP button
+		@grd2: up_buttons_array(f) = FALSE
+	then
+		@act1: up_buttons_array(f) ≔ TRUE
+	end
+
+	/*
+	 * User presses the down button on a floor.
+	 */
+	event DownButtonPresses
+	refines DownButtonPresses
+	any f where
+		@grd1: f ∈ 1 ‥ TOP_FLOOR // Any floor excepts the bottom floor has a DOWN button.
+		@grd2: down_buttons_array(f) = FALSE
+	then
+		@act1: down_buttons_array(f) ≔ TRUE
+	end
+
+	/*
+	 * User presses a floor button (within the cabin).
+	 */
+	event FloorButtonPresses
+	refines FloorButtonPresses
+	any f where
+		@grd1: f ∈ 0 ‥ TOP_FLOOR // Any floor has a corresponding floor button.
+		@grd2: floor_buttons_array(f) = FALSE
+	then
+		@act1: floor_buttons_array(f) ≔ TRUE
+	end
+
+end

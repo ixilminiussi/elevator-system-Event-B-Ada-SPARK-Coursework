@@ -1,0 +1,119 @@
+V "GNAT Lib v2020"
+A -gnatA
+A -mtune=generic
+A -march=x86-64
+P ZX
+
+RN
+RV NO_DIRECT_BOOLEAN_OPERATORS
+RV NO_IO
+RV NO_IMPLEMENTATION_ASPECT_SPECIFICATIONS
+RV NO_IMPLEMENTATION_PRAGMAS
+
+U user_package%b	user_package.adb	0d105639 NE OO PK
+
+U user_package%s	user_package.ads	7e29778d EE NE OO PK
+W ada%s			ada.ads			ada.ali
+W ada.integer_text_io%s	a-inteio.ads		a-inteio.ali
+W ada.text_io%s		a-textio.adb		a-textio.ali
+W button_package%s	button_package.ads	button_package.ali
+W cabin_package%s	cabin_package.adb	cabin_package.ali
+W door_package%s	door_package.ads	door_package.ali
+W floor_package%s	floor_package.ads	floor_package.ali
+W motor_package%s	motor_package.ads	motor_package.ali
+W multi%s		multi.adb		multi.ali
+
+D ada.ads		20200228061810 76789da1 ada%s
+D a-except.ads		20200228061810 a7106115 ada.exceptions%s
+D a-inteio.ads		20200228061810 f64b89a4 ada.integer_text_io%s
+D a-ioexce.ads		20200228061810 e4a01f64 ada.io_exceptions%s
+D a-stream.ads		20200228061810 119b8fb3 ada.streams%s
+D a-tags.ads		20200228061810 edddc8f0 ada.tags%s
+D a-textio.ads		20200228061810 aef4d56d ada.text_io%s
+D a-tiinio.ads		20200228061810 390edddb ada.text_io.integer_io%s
+D a-unccon.ads		20200228061810 0e9b276f ada.unchecked_conversion%s
+D button_package.ads	20210504072948 0567e660 button_package%s
+D cabin_package.ads	20210504072948 d6f11e87 cabin_package%s
+D door_package.ads	20210504080848 fdb93051 door_package%s
+D floor_package.ads	20210504072946 5e48f52f floor_package%s
+D interfac.ads		20200228061810 5ab55268 interfaces%s
+D i-cstrea.ads		20200228061810 e53d8b8e interfaces.c_streams%s
+D motor_package.ads	20210504080834 0ab52e79 motor_package%s
+D multi.ads		20210504072946 0788b7bd multi%s
+D shaft_package.ads	20210504080840 e87926a8 shaft_package%s
+D system.ads		20200228061810 32a08138 system%s
+D s-crtl.ads		20200228061810 0ebbdb71 system.crtl%s
+D s-exctab.ads		20200228061810 54135002 system.exception_table%s
+D s-ficobl.ads		20200228061810 078245e4 system.file_control_block%s
+D s-parame.ads		20200228061810 4752c4cb system.parameters%s
+D s-secsta.ads		20200327060540 9b3ab94b system.secondary_stack%s
+D s-soflin.ads		20200228061810 a7318a92 system.soft_links%s
+D s-stache.ads		20200228061810 a37c21ec system.stack_checking%s
+D s-stalib.ads		20200228061810 6b7a13f2 system.standard_library%s
+D s-stoele.ads		20200228061810 2dc34a04 system.storage_elements%s
+D s-traent.ads		20200228061810 005bf670 system.traceback_entries%s
+D s-unstyp.ads		20200319060540 5ecf7212 system.unsigned_types%s
+D s-wchcon.ads		20200228061810 1b7d22d2 system.wch_con%s
+D user_package.ads	20210504072948 5bcc8f19 user_package%s
+D user_package.adb	20210504072946 56dcd920 user_package%b
+G a e
+G c Z s b [user user_package 12 14 none]
+G r c none [user user_package 12 14 none] [userpressesfloorbutton multi 408 14 none]
+G r c none [user user_package 12 14 none] [show multi 418 14 none]
+G r c none [user user_package 12 14 none] [userpressesupbutton multi 376 14 none]
+G r c none [user user_package 12 14 none] [userpressesdownbutton multi 392 14 none]
+X 1 ada.ads
+16K9*Ada 20e8 32|7r6 7r23 8r6 8r31
+X 3 a-inteio.ads
+18K13*Integer_Text_IO[8|46] 32|8w10 8r35
+X 7 a-textio.ads
+57K13*Text_IO 727e16 32|7w10 7r27
+58@25*File_System 32|15r28
+86I12*Field{integer}
+91I12*Number_Base{integer}
+381U14*Get 33|22s10
+465U14*Put 33|21s10 25s13 28s16 35s22 37s22 49s13 56s19 65s13 72s19
+508U14*Put_Line 33|10s10 11s10 12s10 13s10 14s10 15s10 32s22 39s22 43s19
+. 46s16 53s19 58s19 62s15 69s19 74s19 78s15
+X 8 a-tiinio.ads
+48i4*Default_Width{7|86I12} 32|13r27[3|18]
+49i4*Default_Base{7|91I12} 32|14r27[3|18]
+59U14*Get 33|26s13[3|18] 29s16[3|18] 50s13[3|18] 66s13[3|18]
+80U14*Put 33|36s22[3|18] 38s22[3|18] 57s19[3|18] 73s19[3|18]
+X 10 button_package.ads
+29K9*Button_Package 41e19 32|1w6 1r26
+31A9*FLOOR_BUTTONS_ARRAY_Type(boolean)<integer>
+35A9*UP_BUTTONS_ARRAY_Type(boolean)<integer>
+39A9*DOWN_BUTTONS_ARRAY_Type(boolean)<integer>
+X 11 cabin_package.ads
+33K9*Cabin_Package 56e18 32|3w6 3r25
+35i4*MAX_CABIN{positive} 33|27r40
+45a7*floor_buttons_array{10|31A9} 33|31r42
+49A9*CABINS_ARRAY_Type(39R9)<integer>
+X 12 door_package.ads
+26K9*Door_Package 30e17 32|2w6 2r24
+X 13 floor_package.ads
+25K9*Floor_Package 27e18 32|5w6 5r25
+26i4*TOP_FLOOR{positive} 33|30r43 51r39 67r39
+X 16 motor_package.ads
+25K9*Motor_Package 29e18 32|6w6 6r25
+X 17 multi.ads
+34K9*Multi 427e10 32|4w6 4r17
+37a4*cabins_array{11|49A9} 32|16r27 20r24 23r25 33|19r44 31r22
+38a4*up_buttons_array{10|35A9} 32|17r27 21r24 24r27 33|19r58 52r19
+39a4*down_buttons_array{10|39A9} 32|18r27 22r24 25r27 33|19r76 68r19
+42V13*Invariants{boolean} 32|20s13 23s14 33|19s33
+376U14*UserPressesUpButton 33|55s19
+392U14*UserPressesDownButton 33|71s19
+408U14*UserPressesFloorButton 33|34s22
+418U14*Show 33|40s22 59s19 75s19
+X 32 user_package.ads
+10K9*User_Package 26l5 26e17 33|1b14 85l5 85t17
+12U14*user 33|3b14 83l8 83t12
+X 33 user_package.adb
+4e7 choice{character} 18r13 22m14 23r15
+5i7 floor{integer} 29m20 30r24 30r34 31r62 34r52 36r26 50m17 51r21 51r31
+. 52r36 55r39 57r23 66m17 67r20 67r30 68r38 71r41 73r23
+6i7 cabin{integer} 26m17 27r21 27r31 31r35 34r45 38r26
+8U17 ControlPanel 8b17 16l11 16t23 20s10
+

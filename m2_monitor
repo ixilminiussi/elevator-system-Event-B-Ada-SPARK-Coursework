@@ -1,0 +1,133 @@
+machine m2_motor
+refines m1_shafts
+sees
+c0_cabins
+c1_shafts
+c2_motor
+variables
+floor
+shaft
+motor
+invariants
+@inv4: motor ∈ CABINS ⇸ MOTOR
+@inv5: ∀c·c ∈ CABINS ∧ c ∈ dom(floor) ⇒ c ∈ dom(motor)
+//maybe an invariant that the motor should be on in order to move the cabin
+
+events
+	event INITIALISATION extends INITIALISATION
+	begin
+	@mt: motor ≔ ∅
+	end
+	
+	event CabinMovesUp refines CabinMovesUp
+	any c f s m where
+	@grd1: c ∈ CABINS
+	@grd2: c ↦ f ∈ floor
+	@grd3: c ↦ s ∈ shaft
+	@grd4: c ↦ m ∈ motor
+	@grd5: floor(c) = f
+	@grd6: f ≠ TOP_FLOOR
+	@grd7: f+1 ∉ ran(floor)
+	@grd8: shaft(c) = UP_SHAFT
+	@grd9: motor(c) = ON
+	then
+	@act1: floor(c) ≔ f+1
+	end
+	
+	event CabinMovesDown refines CabinMovesDown
+	any c f s m where
+	@grd1: c ∈ CABINS
+	@grd2: c ↦ f ∈ floor
+	@grd3: c ↦ s ∈ shaft
+	@grd4: c ↦ m ∈ motor
+	@grd5: floor(c) = f
+	@grd6: f ≠ 0
+	@grd7: f−1 ∉ ran(floor)
+	@grd8: shaft(c) = DOWN_SHAFT
+	@grd9: motor(c) = ON
+	then
+	@act1: floor(c) ≔ f−1
+	end
+	
+	event AddCabin refines AddCabin
+	any c where
+	@grd1: c ∈ CABINS
+	@grd2: 0 ∉ ran(floor)
+	@grd3: c ∉ dom(floor)
+	@grd4: c ∉ dom(shaft)
+	@grd5: c ∉ dom(motor)
+	then
+	@act1: floor ≔ floor ∪ {c ↦ 0}
+	@act2: shaft ≔ shaft ∪ {c ↦ UP_SHAFT}
+	@act3: motor ≔ motor ∪ {c ↦ ON}
+	end
+	
+	event RemoveCabin refines RemoveCabin
+	any c f s m where
+	@grd1: c ∈ CABINS
+	@grd2: c ↦ f ∈ floor
+	@grd3: c ↦ s ∈ shaft
+	@grd4: c ↦ m ∈ motor
+	@grd5: floor(c) = f
+	@grd6: f = TOP_FLOOR
+	@grd7: shaft(c) = UP_SHAFT
+	@grd8: motor(c) = ON
+	then
+	@act1: floor ≔ {c} ⩤ floor
+	@act2: shaft ≔ {c} ⩤ shaft
+	@act3: motor ≔ {c} ⩤ motor
+	end
+	
+	event CabinUpToDown refines CabinUpToDown
+	any c f s m where
+	@grd1: c ∈ CABINS
+	@grd2: c ↦ f ∈ floor
+	@grd3: c ↦ s ∈ shaft
+	@grd4: c ↦ m ∈ motor
+	@grd5: shaft(c) = UP_SHAFT
+	@grd6: floor(c) = TOP_FLOOR
+	@grd7: motor(c) = ON
+	then
+	@act1: shaft(c) ≔ DOWN_SHAFT
+	end
+	
+	event CabinDownToUp refines CabinDownToUp
+	any c f s m where
+	@grd1: c ∈ CABINS
+	@grd2: c ↦ f ∈ floor
+	@grd3: c ↦ s ∈ shaft
+	@grd4: c ↦ m ∈ motor
+	@grd5: shaft(c) = DOWN_SHAFT
+	@grd6: floor(c) = 0
+	@grd7: motor(c) = ON
+	then
+	@act1: shaft(c) ≔ UP_SHAFT
+	end
+	
+	event MotorStarts
+	any c f s m where
+	@grd1: c ∈ CABINS
+	@grd2: c ↦ f ∈ floor
+	@grd3: c ↦ s ∈ shaft
+	@grd4: c ↦ m ∈ motor
+	@grd5: motor(c) = OFF 
+	@grd6: floor(c) = f
+	@grd7: shaft(c) = UP_SHAFT ⇒ f + 1 ∉ ran(floor)
+	@grd8: shaft(c) = DOWN_SHAFT ⇒ f − 1 ∉ ran(floor) 
+	then
+	@act1: motor(c) ≔ ON
+	end
+	
+	event MotorStops
+	any c f s m where
+	@grd1: c ∈ CABINS
+	@grd2: c ↦ f ∈ floor
+	@grd3: c ↦ s ∈ shaft
+	@grd4: c ↦ m ∈ motor
+	@grd5: motor(c) = ON
+	then
+	@act1: motor(c) ≔ OFF
+	end
+	
+
+end

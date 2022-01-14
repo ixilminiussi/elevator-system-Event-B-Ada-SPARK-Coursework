@@ -1,0 +1,119 @@
+V "GNAT Lib v2020"
+M P W=b
+A -gnatA
+A -mtune=generic
+A -march=x86-64
+P ZX
+
+RN
+RV NO_IO
+RV NO_IMPLEMENTATION_PRAGMAS
+
+U main%b		main.adb		f0bc58fc NE OO SU
+W ada%s			ada.ads			ada.ali
+Z ada.tags%s		a-tags.adb		a-tags.ali
+W ada.text_io%s		a-textio.adb		a-textio.ali
+W cabin_package%s	cabin_package.adb	cabin_package.ali
+W controller_package%s	controller_package.adb	controller_package.ali
+W door_package%s	door_package.ads	door_package.ali
+W environment_package%s	environment_package.adb	environment_package.ali
+W motor_package%s	motor_package.ads	motor_package.ali
+W multi%s		multi.adb		multi.ali
+W shaft_package%s	shaft_package.ads	shaft_package.ali
+W user_package%s	user_package.adb	user_package.ali
+
+D ada.ads		20200228061810 76789da1 ada%s
+D a-except.ads		20200228061810 a7106115 ada.exceptions%s
+D a-inteio.ads		20200228061810 f64b89a4 ada.integer_text_io%s
+D a-ioexce.ads		20200228061810 e4a01f64 ada.io_exceptions%s
+D a-stream.ads		20200228061810 119b8fb3 ada.streams%s
+D a-tags.ads		20200228061810 edddc8f0 ada.tags%s
+D a-textio.ads		20200228061810 aef4d56d ada.text_io%s
+D a-tiinio.ads		20200228061810 390edddb ada.text_io.integer_io%s
+D a-unccon.ads		20200228061810 0e9b276f ada.unchecked_conversion%s
+D button_package.ads	20210504072948 0567e660 button_package%s
+D cabin_package.ads	20210504072948 d6f11e87 cabin_package%s
+D controller_package.ads  20210504072948 8517c44d controller_package%s
+D door_package.ads	20210504080848 fdb93051 door_package%s
+D environment_package.ads  20210513104220 615d59f4 environment_package%s
+D floor_package.ads	20210504072946 5e48f52f floor_package%s
+D interfac.ads		20200228061810 5ab55268 interfaces%s
+D i-cstrea.ads		20200228061810 e53d8b8e interfaces.c_streams%s
+D main.adb		20210504072948 2fc20e8b main%b
+D motor_package.ads	20210504080834 0ab52e79 motor_package%s
+D multi.ads		20210504072946 0788b7bd multi%s
+D shaft_package.ads	20210504080840 e87926a8 shaft_package%s
+D system.ads		20200228061810 32a08138 system%s
+D s-crtl.ads		20200228061810 0ebbdb71 system.crtl%s
+D s-exctab.ads		20200228061810 54135002 system.exception_table%s
+D s-ficobl.ads		20200228061810 078245e4 system.file_control_block%s
+D s-parame.ads		20200228061810 4752c4cb system.parameters%s
+D s-secsta.ads		20200327060540 9b3ab94b system.secondary_stack%s
+D s-soflin.ads		20200228061810 a7318a92 system.soft_links%s
+D s-stache.ads		20200228061810 a37c21ec system.stack_checking%s
+D s-stalib.ads		20200228061810 6b7a13f2 system.standard_library%s
+D s-stoele.ads		20200228061810 2dc34a04 system.storage_elements%s
+D s-traent.ads		20200228061810 005bf670 system.traceback_entries%s
+D s-unstyp.ads		20200319060540 5ecf7212 system.unsigned_types%s
+D s-wchcon.ads		20200228061810 1b7d22d2 system.wch_con%s
+D user_package.ads	20210504072948 5bcc8f19 user_package%s
+G a e
+G c Z b b [main standard 11 11 none]
+G r c none [main standard 11 11 none] [initialisation multi 65 14 none]
+G r c none [main standard 11 11 none] [show multi 418 14 none]
+G r c none [main standard 11 11 none] [user user_package 12 14 none]
+G r c none [main standard 11 11 none] [motor_controller controller_package 16 14 none]
+G r c none [main standard 11 11 none] [door_controller controller_package 31 14 none]
+G r c none [main standard 11 11 none] [environment environment_package 59 14 none]
+X 1 ada.ads
+16K9*Ada 20e8 18|9r6 46r7 48r7
+X 7 a-textio.ads
+57K13*Text_IO 727e16 18|9w10 46r11 48r11
+381U14*Get 18|48s19
+465U14*Put 18|46s19
+X 10 button_package.ads
+31A9*FLOOR_BUTTONS_ARRAY_Type(boolean)<integer>
+35A9*UP_BUTTONS_ARRAY_Type(boolean)<integer>
+39A9*DOWN_BUTTONS_ARRAY_Type(boolean)<integer>
+X 11 cabin_package.ads
+33K9*Cabin_Package 56e18 18|4w6 4r25
+37I12*Cabin_Number{integer} 18|16r13
+40i7*floor{integer} 18|17m32
+41e7*motor{19|28E9} 18|18m32
+42e7*door{13|29E9} 18|19m32
+43e7*shaft{21|28E9} 18|20m32
+45a7*floor_buttons_array{10|31A9} 18|21m32
+49A9*CABINS_ARRAY_Type(39R9)<integer> 18|13r24
+X 12 controller_package.ads
+11K9*Controller_Package 47e23 18|3w6 3r30
+16U14*motor_controller 18|38s7
+31U14*door_controller 18|40s7
+X 13 door_package.ads
+26K9*Door_Package 30e17 18|7w6 7r24
+29n23*Open{29E9} 18|19r40
+X 14 environment_package.ads
+11K9*Environment_Package 76e24 18|2w6 2r31
+59U14*environment 18|42s7
+X 18 main.adb
+11U11*Main 11b11 51l5 51t9
+12e4 continue{character} 30r10 48m23
+13a4 init_cabins_array{11|49A9} 17m7 25r19
+16i8 n{11|37I12} 17r25 17r41
+X 19 motor_package.ads
+25K9*Motor_Package 18|6w6 6r25 19|29e18
+28n28*Off{28E9} 18|18r41
+X 20 multi.ads
+34K9*Multi 18|5w6 5r17 20|427e10
+37a4*cabins_array{11|49A9} 18|32r25
+38a4*up_buttons_array{10|35A9} 18|33r25
+39a4*down_buttons_array{10|39A9} 18|34r25
+42V13*Invariants{boolean} 18|31s30
+65U14*INITIALISATION 18|25s4
+418U14*Show 18|28s4 44s7
+X 21 shaft_package.ads
+25K9*Shaft_Package 18|8w6 8r25 21|29e18
+28n24*Up{28E9} 18|20r41
+X 35 user_package.ads
+10K9*User_Package 18|1w6 1r24 35|26e17
+12U14*user 18|36s7
+

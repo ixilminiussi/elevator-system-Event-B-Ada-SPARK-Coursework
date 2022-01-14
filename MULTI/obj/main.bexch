@@ -1,0 +1,29 @@
+[GENERATED OBJECT FILE]
+b__main.o
+[PROJECT FILES]
+C:\Users\ixilm\Desktop\MULTI\multi.gpr
+20210504072946 92e2d8f78a290b02f83a0a52234449a6
+[BOUND OBJECT FILES]
+C:\Users\ixilm\Desktop\MULTI\obj\door_package.o
+C:\Users\ixilm\Desktop\MULTI\obj\floor_package.o
+C:\Users\ixilm\Desktop\MULTI\obj\button_package.o
+C:\Users\ixilm\Desktop\MULTI\obj\motor_package.o
+C:\Users\ixilm\Desktop\MULTI\obj\shaft_package.o
+C:\Users\ixilm\Desktop\MULTI\obj\cabin_package.o
+C:\Users\ixilm\Desktop\MULTI\obj\multi.o
+C:\Users\ixilm\Desktop\MULTI\obj\controller_package.o
+C:\Users\ixilm\Desktop\MULTI\obj\environment_package.o
+C:\Users\ixilm\Desktop\MULTI\obj\user_package.o
+C:\Users\ixilm\Desktop\MULTI\obj\main.o
+[GENERATED SOURCE FILES]
+b__main.ads
+b__main.adb
+b__main.ali
+[RESULTING OPTIONS]
+-LC:\Users\ixilm\Desktop\MULTI\obj\
+-LC:\Users\ixilm\Desktop\MULTI\obj\
+-LC:/gnat/2020/lib/gcc/x86_64-pc-mingw32/9.3.1/adalib/
+-static
+-static-libgcc
+C:/gnat/2020/lib/gcc/x86_64-pc-mingw32/9.3.1/adalib/libgnat.a
+-Wl,--stack=0x2000000

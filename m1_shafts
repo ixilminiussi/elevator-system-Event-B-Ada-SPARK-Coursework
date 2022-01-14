@@ -1,0 +1,94 @@
+machine m1_shafts
+refines m0_cabins
+sees
+c0_cabins
+c1_shafts
+variables
+floor
+shaft
+invariants
+@inv2: shaft ∈ CABINS ⇸ SHAFTS
+@inv3: ∀c·c ∈ CABINS ∧ c ∈ dom(floor) ⇒ c ∈ dom(shaft)
+//@inv4: ∀c,f·c ∈ CABINS ∧ c ∈ dom(floor) ∧ floor(c) = f ⇒ card(floor∼ [{f}]) ≤ 2
+
+events
+	event INITIALISATION extends INITIALISATION
+	begin
+	@sh: shaft ≔ ∅
+	end
+	
+	event CabinMovesUp refines CabinMovesUp
+	any c f s where
+	@grd1: c ∈ CABINS
+	@grd2: c ↦ f ∈ floor
+	@grd3: c ↦ s ∈ shaft
+	@grd4: floor(c) = f
+	@grd5: f ≠ TOP_FLOOR
+	@grd6: f+1 ∉ ran(floor)
+	@grd7: shaft(c) = UP_SHAFT
+	then
+	@act1: floor(c) ≔ f+1
+	end
+	
+	event CabinMovesDown refines CabinMovesDown
+	any c f s where
+	@grd1: c ∈ CABINS
+	@grd2: c ↦ f ∈ floor
+	@grd3: c ↦ s ∈ shaft
+	@grd4: floor(c) = f
+	@grd5: f ≠ 0
+	@grd6: f−1 ∉ ran(floor)
+	@grd7: shaft(c) = DOWN_SHAFT
+	then
+	@act1: floor(c) ≔ f−1
+	end
+	
+	event AddCabin refines AddCabin
+	any c where
+	@grd1: c ∈ CABINS
+	@grd2: 0 ∉ ran(floor)
+	@grd3: c ∉ dom(floor)
+	@grd4: c ∉ dom(shaft)
+	then
+	@act1: floor ≔ floor ∪ {c ↦ 0}
+	@act2: shaft ≔ shaft ∪ {c ↦ UP_SHAFT}
+	end
+	
+	event RemoveCabin refines RemoveCabin
+	any c f s where
+	@grd1: c ∈ CABINS
+	@grd2: c ↦ f ∈ floor
+	@grd3: c ↦ s ∈ shaft
+	@grd4: floor(c) = f
+	@grd5: f = TOP_FLOOR
+	@grd6: shaft(c) = UP_SHAFT
+	then
+	@act1: floor ≔ {c} ⩤ floor
+	@act2: shaft ≔ {c} ⩤ shaft
+	end
+	
+	event CabinUpToDown
+	any c f s where
+	@grd1: c ∈ CABINS
+	@grd2: c ↦ f ∈ floor
+	@grd3: c ↦ s ∈ shaft
+	@grd4: shaft(c) = UP_SHAFT
+	@grd5: floor(c) = TOP_FLOOR
+	//@grd5: floor(c) = f
+	//@grd6: card(floor∼ [{f}]) = 1
+	then
+	@act1: shaft(c) ≔ DOWN_SHAFT
+	end
+	
+	event CabinDownToUp
+	any c f s where
+	@grd1: c ∈ CABINS
+	@grd2: c ↦ f ∈ floor
+	@grd3: c ↦ s ∈ shaft
+	@grd4: shaft(c) = DOWN_SHAFT
+	@grd5: floor(c) = 0
+	then
+	@act1: shaft(c) ≔ UP_SHAFT
+	end
+	
+end

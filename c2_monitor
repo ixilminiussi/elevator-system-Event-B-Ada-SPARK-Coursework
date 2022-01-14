@@ -1,0 +1,9 @@
+context c2_motor
+sets
+MOTOR
+constants
+ON
+OFF
+axioms
+@ax4: partition(MOTOR,{ON},{OFF})
+end

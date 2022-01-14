@@ -1,0 +1,21 @@
+V "GNAT Lib v2020"
+A -gnatA
+A -mtune=generic
+A -march=x86-64
+P ZX
+
+RN
+RV NO_IMPLEMENTATION_PRAGMAS
+
+U door_package%s	door_package.ads	fdb93051 NE OO PK
+
+D door_package.ads	20210504080848 fdb93051 door_package%s
+D system.ads		20200228061810 32a08138 system%s
+G a e
+X 1 door_package.ads
+26K9*Door_Package 30l5 30e17
+29E9*DOOR_Type 29e42
+29n23*Open{29E9}
+29n29*Half{29E9}
+29n35*Closed{29E9}
+

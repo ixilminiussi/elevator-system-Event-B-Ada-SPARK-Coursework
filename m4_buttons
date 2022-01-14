@@ -1,0 +1,216 @@
+machine m4_buttons
+refines m3_door
+sees
+c0_cabins
+c1_shafts
+c2_motor
+c3_door
+variables
+floor
+shaft
+motor
+door
+floor_buttons
+up_buttons
+down_buttons
+invariants
+@inv8: floor_buttons ∈ CABINS ↔ FLOORS 
+@inv9: up_buttons ⊆ 0‥TOP_FLOOR − 1
+@inv10: down_buttons ⊆ 1‥TOP_FLOOR
+
+events
+	event INITIALISATION extends INITIALISATION
+	begin
+	@fb: floor_buttons ≔ ∅
+	@ub: up_buttons ≔ ∅
+	@db: down_buttons ≔ ∅
+	end
+	
+	event CabinMovesUp extends CabinMovesUp
+
+	end
+	
+	event CabinMovesDown extends CabinMovesDown
+
+	end
+	
+	event AddCabin extends AddCabin
+
+	end
+	
+	event RemoveCabin refines RemoveCabin
+	any c f s m where
+	@grd1: c ∈ CABINS
+	@grd2: c ↦ f ∈ floor
+	@grd3: c ↦ s ∈ shaft
+	@grd4: c ↦ m ∈ motor
+	@grd5: floor(c) = f
+	@grd6: f = TOP_FLOOR
+	@grd7: shaft(c) = UP_SHAFT
+	@grd8: motor(c) = ON
+	@grd9: door(c) = CLOSED
+	then
+	@act1: floor ≔ {c} ⩤ floor
+	@act2: shaft ≔ {c} ⩤ shaft
+	@act3: motor ≔ {c} ⩤ motor
+	@act4: door ≔ {c} ⩤ door
+	@act5: floor_buttons ≔ {c} ⩤ floor_buttons
+	end
+	
+	event CabinUpToDown refines CabinUpToDown
+	any c f s m d where
+	@grd1: c ∈ CABINS
+	@grd2: c ↦ f ∈ floor
+	@grd3: c ↦ s ∈ shaft
+	@grd4: c ↦ m ∈ motor
+	@grd5: shaft(c) = UP_SHAFT
+	@grd6: floor(c) = TOP_FLOOR
+	@grd7: motor(c) = ON
+	@grd8: c ↦ d ∈ door
+	@grd9: door(c) = CLOSED
+	@grd10: floor(c) ∉ floor_buttons[{c}]
+	@grd12: 0 ‥ floor(c) − 1 ∩ (floor_buttons[{c}] ∪ up_buttons ∪ down_buttons) ≠ ∅ 
+	then
+	@act1: shaft(c) ≔ DOWN_SHAFT
+	end
+	
+	event CabinDownToUp refines CabinDownToUp
+	any c f s m d where
+	@grd1: c ∈ CABINS
+	@grd2: c ↦ f ∈ floor
+	@grd3: c ↦ s ∈ shaft
+	@grd4: c ↦ m ∈ motor
+	@grd5: shaft(c) = DOWN_SHAFT
+	@grd6: floor(c) = 0
+	@grd7: motor(c) = ON
+	@grd8: c ↦ d ∈ door
+	@grd9: door(c) = CLOSED
+	@grd10: floor(c) ∉ floor_buttons[{c}]
+	@grd12: floor(c) + 1 ‥ TOP_FLOOR ∩ (floor_buttons[{c}] ∪ up_buttons ∪ down_buttons) ≠ ∅ 
+	then
+	@act1: shaft(c) ≔ UP_SHAFT
+	end
+	
+	event MotorStarts refines MotorStarts
+	any c f s m d where
+	@grd1: c ∈ CABINS
+	@grd2: c ↦ f ∈ floor
+	@grd3: c ↦ s ∈ shaft
+	@grd4: c ↦ m ∈ motor
+	@grd5: motor(c) = OFF
+	@grd6: floor(c) = f
+	@grd7: shaft(c) = UP_SHAFT ⇒ f + 1 ∉ ran(floor) ∧ f + 1 ‥ TOP_FLOOR ∩ (floor_buttons[{c}] ∪ up_buttons ∪ down_buttons) ≠ ∅
+	@grd8: shaft(c) = DOWN_SHAFT ⇒ f − 1 ∉ ran(floor) ∧ 0 ‥ f − 1 ∩ (floor_buttons[{c}] ∪ up_buttons ∪ down_buttons) ≠ ∅
+	@grd9: c ↦ d ∈ door
+	@grd10: door(c) = CLOSED 
+	@grd11: f ∉ floor_buttons[{c}] ∪ up_buttons ∪ down_buttons
+	then
+	@act1: motor(c) ≔ ON 
+	end
+
+	
+	event MotorStopsNoReq refines MotorStops
+	any c f s m d where
+	@grd1: c ∈ CABINS
+	@grd2: c ↦ f ∈ floor
+	@grd3: c ↦ s ∈ shaft
+	@grd4: c ↦ m ∈ motor
+	@grd5: motor(c) = ON
+	@grd6: c ↦ d ∈ door
+	//it will stop if it doesn't have anywhere else to go
+	@grd7: shaft(c) = UP_SHAFT ⇒ floor(c) + 1 ‥ TOP_FLOOR ∩ (floor_buttons[{c}] ∪ up_buttons ∪ down_buttons) = ∅
+	@grd8: shaft(c) = DOWN_SHAFT ⇒ 0 ‥ floor(c) − 1 ∩ (floor_buttons[{c}] ∪ up_buttons ∪ down_buttons) = ∅ 
+	then
+	@act1: motor(c) ≔ OFF
+	end
+	
+	event MotorStopsReq refines MotorStops
+	any c f s m d where
+	@grd1: c ∈ CABINS
+	@grd2: c ↦ f ∈ floor
+	@grd3: c ↦ s ∈ shaft
+	@grd4: c ↦ m ∈ motor
+	@grd5: motor(c) = ON
+	@grd6: c ↦ d ∈ door
+	@grd7: floor(c) = f
+	//it will stop if this floor was selected from the cabin or from the buttons outside
+	@grd8: shaft(c) = UP_SHAFT ⇒ f ∈ floor_buttons[{c}] ∪ up_buttons ∨ f + 1 ∈ ran(floor)
+	@grd9: shaft(c) = DOWN_SHAFT ⇒ f ∈ floor_buttons[{c}] ∪ down_buttons ∨ f − 1 ∈ ran(floor)
+	then
+	@act1: motor(c) ≔ OFF
+	end
+	
+
+	
+	event DoorClosedToHalf refines DoorClosedToHalf
+	any c f s m d where
+	@grd1: c ∈ CABINS
+	@grd2: c ↦ f ∈ floor
+	@grd3: c ↦ s ∈ shaft
+	@grd4: c ↦ m ∈ motor
+	@grd5: motor(c) = OFF
+	@grd6: c ↦ d ∈ door
+	@grd7: door(c) = CLOSED
+	@grd8: floor(c) ∈ floor_buttons[{c}] ∪ up_buttons
+	@grd9: floor(c) = f
+	then
+	@act0: door(c) ≔ HALF
+	 //@act1: floor_buttons(c) ≔ floor_buttons[{c}] ∖ {f} // Clear floor button for the current floor.
+	@act2: up_buttons ≔ up_buttons ∖ {floor(c)} // Clear the up button for the current floor.
+	
+	end
+	
+	event DoorOpenToHalf refines DoorOpenToHalf
+	any c f s m d where
+	@grd1: c ∈ CABINS
+	@grd2: c ↦ f ∈ floor
+	@grd3: c ↦ s ∈ shaft
+	@grd4: c ↦ m ∈ motor
+	@grd5: motor(c) = OFF
+	@grd6: c ↦ d ∈ door
+	@grd7: door(c) = OPEN
+	@grd8: floor(c) ∉ floor_buttons[{c}] // There is no request for this floor
+	@grd9: shaft(c) = UP_SHAFT ⇒ floor(c) ∉ up_buttons // If moving up then there are no pending up request at this floor
+	@grd10: shaft(c) = DOWN_SHAFT ⇒ floor(c) ∉ down_buttons // If moving down then there are no pending down request at this floor
+	then
+	@act0: door(c) ≔ HALF
+	
+	end
+	
+	event DoorHalfToOpen extends DoorHalfToOpen
+	
+	end
+	
+	event DoorHalfToClosed extends DoorHalfToClosed
+	
+	end
+
+ 	event UserPressesFloorButton
+ 	any c f s m d fb where
+	@grd1: c ∈ CABINS
+	@grd2: c ↦ f ∈ floor
+	@grd3: c ↦ s ∈ shaft
+	@grd4: c ↦ m ∈ motor
+	@grd5: c ↦ d ∈ door
+	@grd6: fb ∈ FLOORS
+	@grd7: fb ∉ ran(floor_buttons)
+	then
+	@act1: floor_buttons(c) ≔ fb
+	end
+	
+	event UserPressesUpButton
+ 	any ub where
+	@grd6: ub ∈ 0‥TOP_FLOOR − 1
+	@grd7: ub ∉ up_buttons
+	then
+	@act1: up_buttons ≔ up_buttons ∪ {ub}
+	end
+	
+	event UserPressesDownButton
+ 	any db where
+	@grd6: db ∈ 1‥TOP_FLOOR
+	@grd7: db ∉ down_buttons
+	then
+	@act1: down_buttons ≔ down_buttons ∪ {db}
+	end
+end

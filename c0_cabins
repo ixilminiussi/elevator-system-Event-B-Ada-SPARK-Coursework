@@ -1,0 +1,10 @@
+context c0_cabins
+sets
+CABINS
+constants
+TOP_FLOOR
+FLOORS
+axioms
+@ax0: TOP_FLOOR ∈ ℕ1
+@ax1: FLOORS = 0‥TOP_FLOOR
+end

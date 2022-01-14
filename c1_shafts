@@ -1,0 +1,9 @@
+context c1_shafts
+sets
+SHAFTS
+constants
+UP_SHAFT
+DOWN_SHAFT
+axioms
+@ax2: partition(SHAFTS,{UP_SHAFT},{DOWN_SHAFT})
+end
